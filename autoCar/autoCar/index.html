@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoCar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="./image/icon.ico" type="image/png">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #920911;
+      --red-hover: #a22b33;
+      --bg: #000;
+      --surface: #171717cc;
+      --border: #565656;
+      --text: #d1d1d1;
+      --text-muted: #a6a6a6;
+      --white: #fff;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    ul { list-style: none; }
+
+    button {
+      border-radius: 8px;
+      border: 1px solid transparent;
+      padding: 0.6em 1.2em;
+      font-size: 1em;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.25s;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: #000;
+      position: fixed;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    #logo {
+      font-size: 3em;
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      margin-left: 50px;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    #logo span {
+      color: var(--red);
+    }
+
+    @media (max-width: 500px) {
+      header { justify-content: center; }
+      #logo { margin: 0; }
+    }
+
+    /* ===== HERO / INTRO ===== */
+    #inicio {
+      width: 100vw;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+
+    #inicio video {
+      width: 100vw;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ===== CADASTRO ===== */
+    #cadastro {
+      background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(1,1,1,1) 24%);
+      min-height: 80vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      top: -173px;
+      padding-bottom: 40px;
+    }
+
+    #cadastro .form-side {
+      margin-left: 70px;
+    }
+
+    #cadastro h2 {
+      font-size: 2em;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--white);
+    }
+
+    #cadastro form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    form input[type="text"] {
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: #b8b8b8;
+      font-size: 1em;
+      font-weight: 500;
+      height: 50px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      outline: none;
+      padding-left: 15px;
+      width: 300px;
+      font-family: inherit;
+      transition: border-bottom 0.2s;
+    }
+
+    form input[type="text"]:focus {
+      border-bottom: 5px solid var(--red);
+    }
+
+    form input[type="text"]::placeholder {
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    form input[type="text"]:focus::placeholder {
+      font-size: 0.8em;
+    }
+
+    #botaoEnviar {
+      background: var(--red);
+      width: 100%;
+      color: var(--white);
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      height: 50px;
+      font-size: 1em;
+      font-weight: 600;
+      font-family: inherit;
+      transition: background 0.3s, font-size 0.3s;
+    }
+
+    #botaoEnviar:hover {
+      background: var(--red-hover);
+      font-size: 1.2em;
+    }
+
+    #cadastro .car-image {
+      width: 80vh;
+      margin-right: 80px;
+    }
+
+    @media (max-width: 1200px) {
+      #cadastro { top: -22vh; justify-content: center; }
+      #cadastro .form-side { margin: 0 auto; width: 70vw; }
+      #cadastro form input[type="text"] { width: 100%; }
+      #botaoEnviar { width: 100% !important; }
+      #cadastro .car-image { display: none; }
+    }
+
+    @media (max-width: 681px) {
+      #cadastro { top: -121px; }
+      #cadastro .form-side { margin: 0 auto; width: 80vw; }
+    }
+
+    @media (max-width: 500px) {
+      #cadastro h2 { font-size: 1.5em; }
+      #cadastro { top: -19vh; justify-content: space-around; }
+    }
+
+    /* ===== LISTAGEM ===== */
+    #listagem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      top: -34vh;
+    }
+
+    #btn-lista {
+      background: var(--red);
+      color: var(--white);
+      font-size: 1.7em;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 0.5em 1.5em;
+      border-radius: 8px;
+      font-family: inherit;
+      transition: background 0.3s;
+    }
+
+    #btn-lista:hover {
+      background: var(--red-hover);
+    }
+
+    .caixaElementos {
+      width: 70vw;
+      max-height: 500px;
+      background: #ccc;
+      color: #000;
+      position: relative;
+      overflow: auto;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .caixaElementos.hidden { display: none; }
+
+    #headerCaixa {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      background: #ccc;
+      z-index: 10;
+    }
+
+    #headerCaixa h3 { font-size: 1.3em; }
+
+    #btnFechar {
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #000;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+
+    .veiculos { border-bottom: 3px solid var(--red); }
+
+    .elementos {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 8px 0;
+    }
+
+    .elementos ul { list-style: none; padding: 0; }
+    .elementos ul li { margin-bottom: 4px; }
+    .bold { font-weight: 700; }
+
+    .buttons button {
+      color: var(--white);
+      margin-left: 10px;
+      border: none;
+      padding: 6px 14px;
+    }
+
+    .btn-editar { background: green !important; }
+    .btn-excluir { background: red !important; }
+
+    /* ===== MODAL EDIÇÃO ===== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      background: #111;
+      color: var(--white);
+      padding: 40px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .modal h3 { font-size: 1.6em; margin-bottom: 8px; }
+
+    .modal input[type="text"] {
+      width: 80%;
+      border-radius: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: #b8b8b8;
+      font-size: 1em;
+      height: 46px;
+      outline: none;
+      padding-left: 15px;
+      font-family: inherit;
+    }
+
+    .modal input[type="text"]:focus { border-bottom: 4px solid var(--red); }
+
+    .modal-buttons { display: flex; gap: 16px; margin-top: 8px; }
+
+    .modal-buttons button {
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      padding: 10px 24px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .modal-buttons button:hover { background: var(--red-hover); }
+    .modal-buttons button.cancel { background: #444; }
+    .modal-buttons button.cancel:hover { background: #666; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: linear-gradient(180deg, rgba(146,9,17,1) 0%, rgba(1,1,1,1) 51%);
+      position: relative;
+      top: -35vh;
+      height: 44vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 1em;
+    }
+
+    @media (max-width: 1200px) {
+      footer { top: -19vh; }
+      #btn-lista { font-size: 1.5em !important; }
+      #listagem { top: -18vh; }
+    }
+
+    @media (max-width: 500px) {
+      footer { top: -19vh; }
+      #btn-lista { font-size: 1.2em; }
+    }
+
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #222;
+      color: #fff;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border-left: 4px solid var(--red);
+      font-size: 1em;
+      z-index: 999;
+      transition: transform 0.4s ease;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div id="logo">Auto<span>Car</span></div>
+  </header>
+
+  <!-- INTRO VIDEO (top padding for fixed header) -->
+  <div style="padding-top: 60px;">
+    <section id="inicio">
+      <!--
+        Substitua o src abaixo pelo caminho do seu vídeo.
+        Ex: <source src="assets/carro.mp4" type="video/mp4" />
+      -->
+      <video autoplay loop muted playsinline>
+        <source src="./image/carro.mp4" type="video/mp4" />
+      </video>
+    </section>
+  </div>
+
+  <!-- CADASTRO -->
+  <section id="cadastro">
+    <div class="form-side">
+      <h2 id="form-title">Cadastre Seu Veículo</h2>
+      <form id="form-cadastro" novalidate>
+        <input type="text" id="input-marca" placeholder="Marca" minlength="2" required title="Digite ao menos 2 caracteres" />
+        <input type="text" id="input-modelo" placeholder="Modelo" minlength="2" required title="Digite ao menos 2 caracteres" />
+        <input type="text" id="input-ano" placeholder="Ano" required title="O ano deve ser entre 1900 e 2025" />
+        <input type="text" id="input-preco" placeholder="Preço" required title="O preço deve ser maior que 0" />
+        <input type="submit" id="botaoEnviar" value="Criar" />
+      </form>
+    </div>
+    <!-- Substitua o src pela imagem local se quiser: src="assets/carroImage.png" -->
+    <img
+      class="car-image"
+      src="./image/carroImage.png"
+      alt="Carro"
+    />
+  </section>
+
+  <!-- LISTAGEM -->
+  <section id="listagem">
+    <button id="btn-lista">Veja nossos veículos</button>
+    <div class="caixaElementos hidden" id="caixa-lista">
+      <div id="headerCaixa">
+        <h3>Veículos disponíveis</h3>
+        <button id="btnFechar" title="Fechar">✕</button>
+      </div>
+      <div id="lista-veiculos"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Copyright &copy; 2024 AutoCar
+  </footer>
+
+  <!-- MODAL EDIÇÃO -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <h3>Editar Veículo</h3>
+      <input type="text" id="edit-marca" placeholder="Marca" />
+      <input type="text" id="edit-modelo" placeholder="Modelo" />
+      <input type="text" id="edit-ano" placeholder="Ano" />
+      <input type="text" id="edit-preco" placeholder="Preço" />
+      <div class="modal-buttons">
+        <button id="btn-salvar">Salvar</button>
+        <button class="cancel" id="btn-cancelar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    /* =============================================
+       STORAGE — usa localStorage no lugar do json-server
+    ============================================= */
+    const STORAGE_KEY = 'autocar_products';
+
+    function getProducts() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch { return []; }
+    }
+
+    function saveProducts(products) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    }
+
+    function generateId() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    }
+
+    /* =============================================
+       STATE
+    ============================================= */
+    let products = getProducts();
+    let editingId = null;
+
+    /* =============================================
+       TOAST
+    ============================================= */
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+
+    /* =============================================
+       HELPERS — FORMATO PREÇO
+    ============================================= */
+    const precoInput = document.getElementById('input-preco');
+
+    precoInput.addEventListener('focus', () => {
+      if (!precoInput.value.startsWith('R$')) precoInput.value = 'R$ ';
+    });
+
+    precoInput.addEventListener('input', () => {
+      const raw = precoInput.value.replace(/^R\$\s*/, '').replace(/[^0-9.,]/g, '');
+      precoInput.value = 'R$ ' + raw;
+    });
+
+    function parsePreco(str) {
+      return parseFloat((str || '').replace(/^R\$\s*/, '').replace(',', '.')) || 0;
+    }
+
+    function formatPreco(value) {
+      if (value === null || value === undefined || isNaN(value)) return 'R$ —';
+      return 'R$ ' + Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+    }
+
+    /* =============================================
+       RENDER LISTA
+    ============================================= */
+    function renderLista() {
+      const container = document.getElementById('lista-veiculos');
+      container.innerHTML = '';
+
+      if (products.length === 0) {
+        container.innerHTML = '<p style="text-align:center;padding:20px;color:#555;">Nenhum veículo cadastrado.</p>';
+        return;
+      }
+
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'veiculos';
+        div.innerHTML = `
+          <div class="elementos">
+            <ul>
+              <li><span class="bold">Marca:</span> ${p.marca}</li>
+              <li><span class="bold">Modelo:</span> ${p.modelo}</li>
+              <li><span class="bold">Ano:</span> ${p.ano}</li>
+              <li><span class="bold">Preço:</span> ${formatPreco(p.preco)}</li>
+            </ul>
+            <div class="buttons">
+              <button class="btn-editar" data-id="${p.id}">Editar</button>
+              <button class="btn-excluir" data-id="${p.id}">Excluir</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+
+      // Delegação de eventos
+      container.querySelectorAll('.btn-excluir').forEach(btn => {
+        btn.addEventListener('click', () => handleDelete(btn.dataset.id));
+      });
+      container.querySelectorAll('.btn-editar').forEach(btn => {
+        btn.addEventListener('click', () => openModal(btn.dataset.id));
+      });
+    }
+
+    /* =============================================
+       CADASTRO — SUBMIT
+    ============================================= */
+    const formTitle = document.getElementById('form-title');
+    const btnEnviar = document.getElementById('botaoEnviar');
+
+    document.getElementById('form-cadastro').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const marca  = document.getElementById('input-marca').value.trim();
+      const modelo = document.getElementById('input-modelo').value.trim();
+      const ano    = document.getElementById('input-ano').value.trim();
+      const preco  = parsePreco(document.getElementById('input-preco').value);
+
+      if (marca.length < 2)  { showToast('Marca: mínimo 2 caracteres'); return; }
+      if (modelo.length < 2) { showToast('Modelo: mínimo 2 caracteres'); return; }
+      const anoNum = parseInt(ano, 10);
+      if (isNaN(anoNum) || anoNum < 1900 || anoNum > 2025) {
+        showToast('Ano inválido (1900–2025)'); return;
+      }
+      if (!preco || preco <= 0) { showToast('Informe um preço válido'); return; }
+
+      const product = { id: generateId(), marca, modelo, ano, preco };
+      products.push(product);
+      saveProducts(products);
+      renderLista();
+      showToast('Veículo cadastrado com sucesso!');
+      resetForm();
+    });
+
+    function resetForm() {
+      document.getElementById('input-marca').value  = '';
+      document.getElementById('input-modelo').value = '';
+      document.getElementById('input-ano').value    = '';
+      document.getElementById('input-preco').value  = '';
+    }
+
+    /* =============================================
+       DELETE
+    ============================================= */
+    function handleDelete(id) {
+      if (!confirm('Tem certeza que deseja excluir este veículo?')) return;
+      products = products.filter(p => p.id !== id);
+      saveProducts(products);
+      renderLista();
+      showToast('Veículo removido.');
+    }
+
+    /* =============================================
+       MODAL EDIÇÃO
+    ============================================= */
+    function openModal(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      editingId = id;
+
+      document.getElementById('edit-marca').value  = p.marca;
+      document.getElementById('edit-modelo').value = p.modelo;
+      document.getElementById('edit-ano').value    = p.ano;
+      document.getElementById('edit-preco').value  = formatPreco(p.preco);
+
+      document.getElementById('modal-overlay').classList.add('active');
+    }
+
+    function closeModal() {
+      editingId = null;
+      document.getElementById('modal-overlay').classList.remove('active');
+    }
+
+    document.getElementById('btn-cancelar').addEventListener('click', closeModal);
+    document.getElementById('modal-overlay').addEventListener('click', e => {
+      if (e.target === document.getElementById('modal-overlay')) closeModal();
+    });
+
+    document.getElementById('btn-salvar').addEventListener('click', () => {
+      const marca  = document.getElementById('edit-marca').value.trim();
+      const modelo = document.getElementById('edit-modelo').value.trim();
+      const ano    = document.getElementById('edit-ano').value.trim();
+      const preco  = parsePreco(document.getElementById('edit-preco').value);
+
+      if (!marca || !modelo || !ano) { showToast('Preencha todos os campos'); return; }
+
+      products = products.map(p =>
+        p.id === editingId ? { ...p, marca, modelo, ano, preco } : p
+      );
+      saveProducts(products);
+      renderLista();
+      closeModal();
+      showToast('Veículo atualizado!');
+    });
+
+    /* =============================================
+       LISTAGEM — TOGGLE
+    ============================================= */
+    document.getElementById('btn-lista').addEventListener('click', () => {
+      renderLista();
+      document.getElementById('caixa-lista').classList.remove('hidden');
+    });
+
+    document.getElementById('btnFechar').addEventListener('click', () => {
+      document.getElementById('caixa-lista').classList.add('hidden');
+    });
+
+    /* =============================================
+       INIT
+    ============================================= */
+    renderLista();
+  </script>
+</body>
+</html>
